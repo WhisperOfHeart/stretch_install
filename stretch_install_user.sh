@@ -19,15 +19,19 @@ mkdir ~/stretch_user
 mkdir ~/stretch_user/log
 mkdir ~/stretch_user/debug
 mkdir ~/stretch_user/maps
+mkdir ~/stretch_user/models
 
-
-echo "Cloning stretch_install repository into standard location."
+echo "Cloning stretch_install/respeaker repositories into standard location."
 cd ~/repos/
 git clone https://github.com/hello-robot/stretch_install.git
+git clone https://github.com/respeaker/usb_4_mic_array.git
 
-echo "Cloning stretch_deep_perception_models into standard location."
-cd ~/stretch_user
+echo "Retrieving stretch_deep_perception_models/deepspeech models into standard location."
+cd ~/stretch_user/models
 git clone https://github.com/hello-robot/stretch_deep_perception_models
+wget https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/deepspeech-0.6.1-models.tar.gz
+tar -xvf deepspeech-0.6.1-models.tar.gz
+rm deepspeech-0.6.1-models.tar.gz
 
 echo "Setting up local copy of robot factory data"
 cp -rf /etc/hello-robot/$HELLO_FLEET_ID ~/stretch_user
@@ -95,7 +99,10 @@ echo "INSTALLATION OF ADDITIONAL PIP PACKAGES"
 echo "Install pip Python profiler output viewer (SnakeViz)"
 python -m pip install --user snakeviz
 echo "Install pip Python packages for Respeaker and speech recognition"
-python -m pip install --user pyusb SpeechRecognition pixel-ring click
+python -m pip install --user pyusb pyaudio SpeechRecognition pixel-ring click deepspeech-tflite
+cd ~/repos/usb_4_mic_array/
+echo " - Flashing Respeaker with 6 channel firmware"
+sudo python2 dfu.py --download 6_channels_firmware.bin
 echo "Install pip Python CMA-ES optimization package"
 python -m pip install --user cma
 echo "Install latest version of Python OpenCV via pip"
@@ -248,6 +255,7 @@ curl ifconfig.me
 echo ""
 echo "Make it a static IP and then use it for SSH and VNC."
 echo "Done!"
+echo "A reboot is recommended."
 
 echo "DONE WITH STRETCH_USER_INSTALL"
 echo "###########################################"
