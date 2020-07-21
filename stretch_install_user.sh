@@ -27,8 +27,9 @@ git clone https://github.com/hello-robot/stretch_install.git
 git clone https://github.com/respeaker/usb_4_mic_array.git
 
 echo "Retrieving stretch_deep_perception_models/deepspeech models into standard location."
-cd ~/stretch_user/models
+cd ~/stretch_user
 git clone https://github.com/hello-robot/stretch_deep_perception_models
+cd ~/stretch_user/models
 wget https://github.com/mozilla/DeepSpeech/releases/download/v0.6.1/deepspeech-0.6.1-models.tar.gz
 tar -xvf deepspeech-0.6.1-models.tar.gz
 rm deepspeech-0.6.1-models.tar.gz
